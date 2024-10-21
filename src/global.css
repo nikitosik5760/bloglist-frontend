@@ -12,3 +12,14 @@
     padding: 6px;
     color: white;
 }
+.blog{
+    border: solid 2px black;
+    padding: 0.5em;
+}
+.blog-form{
+    padding: 1em;
+}
+.like-btn{
+    border: solid 1px gray;
+    border-radius: 10%;
+}

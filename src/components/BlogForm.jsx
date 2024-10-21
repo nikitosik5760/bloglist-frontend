@@ -1,25 +1,25 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 
-const BlogForm = ({setBlogs, setSuccesMessage, setErrorMessage}) => {
+const BlogForm = ({createBlog, setSuccesMessage, setErrorMessage}) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleBlogCreation = async(e) => {
+  const addBlog = async(e) => {
     e.preventDefault()
     try {
-      const createdblog = await blogService.create({ title, author, url })
-      setBlogs(b=>b.concat(createdblog))
+      const createdBlog = await createBlog({ title, author, url })
+      console.log('blog at the blog form', createdBlog)
+      console.log('user of created blog', createdBlog.user)
       setAuthor('')
       setTitle('')
       setUrl('')
-      setSuccesMessage(`a new blog ${createdblog.title} added`)
+      setSuccesMessage(`a new blog ${createdBlog.title} added`)
       setTimeout(() => {
         setSuccesMessage(null)
       }, 15000)
     } catch (exeption) {
-      setErrorMessage(exeption.toString())
+      setErrorMessage('Not correct values in input')
       setTimeout(()=>{
         setErrorMessage(null)
       }, 15000)
@@ -28,7 +28,9 @@ const BlogForm = ({setBlogs, setSuccesMessage, setErrorMessage}) => {
   }
 
   return (
-    <form onSubmit={handleBlogCreation}>
+    <div className='blog-form'>
+    <h2>create new</h2>
+    <form onSubmit={addBlog}>
         <div>
           title:
           <input
@@ -52,6 +54,7 @@ const BlogForm = ({setBlogs, setSuccesMessage, setErrorMessage}) => {
         </div>
         <button type='submit'>create</button>
       </form>
+    </div>
   )
 }
 
