@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:3003/api/blogs'
 let token = null
 
 const setToken= (newToken) => {
-    token = `Bearer ${newToken}`
+  token = `Bearer ${newToken}`
 }
 
 const getAll = () => {
@@ -37,14 +37,24 @@ const likeBlog = async blogToLike => {
       url:blogToLike.url
     },
     config
-    )
+  )
 
-    return response.data
+  return response.data
 }
 
-export default { 
-  setToken, 
+const deleteBlog = async blogId => {
+  const config = {
+    headers : { Authorization: token },
+  }
+
+  const response = await axios.delete(`${baseUrl}/${blogId}`, config)
+  return response.data
+}
+
+export default {
+  setToken,
   getAll,
   create,
   likeBlog,
-  }
+  deleteBlog,
+}

@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
-export const Login = ({setUser, setErrorMessage}) => {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+export const Login = ({ setUser, setErrorMessage }) => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-    const handleLogin = async(e) => {
+  const handleLogin = async(e) => {
     e.preventDefault()
     try{
       const user = await loginService.login({
@@ -21,8 +22,8 @@ export const Login = ({setUser, setErrorMessage}) => {
       setUsername('')
       setPassword('')
     } catch (exeption) {
-      setErrorMessage("Wrong password or username")
-      setTimeout(()=>{
+      setErrorMessage('Wrong password or username')
+      setTimeout(() => {
         setErrorMessage(null)
       }, 3000)
       return console.log(exeption)
@@ -33,21 +34,26 @@ export const Login = ({setUser, setErrorMessage}) => {
       <div>
         username:
         <input
-        value={username}
-        onChange={({ target }) => setUsername(target.value)}
+          value={username}
+          onChange={({ target }) => setUsername(target.value)}
         ></input>
       </div>
       <div>
         password:
         <input
-        value={password}
-        onChange={({ target }) => setPassword(target.value)}
+          value={password}
+          onChange={({ target }) => setPassword(target.value)}
         >
         </input>
       </div>
       <button type='submit'>login</button>
     </form>
   )
+}
+
+Login.propTypes = {
+  setUser: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.func.isRequired
 }
 
 export default Login

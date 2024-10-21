@@ -21,5 +21,10 @@
 }
 .like-btn{
     border: solid 1px gray;
-    border-radius: 10%;
+    border-radius: 20%;
+}
+.remove-btn{
+    background-color: red;
+    color: white;
+    border-radius: 20%;
 }

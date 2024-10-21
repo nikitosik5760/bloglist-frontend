@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const BlogForm = ({createBlog, setSuccesMessage, setErrorMessage}) => {
+const BlogForm = ({ createBlog, setSuccesMessage, setErrorMessage }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -17,39 +17,39 @@ const BlogForm = ({createBlog, setSuccesMessage, setErrorMessage}) => {
       setSuccesMessage(`a new blog ${createdBlog.title} added`)
       setTimeout(() => {
         setSuccesMessage(null)
-      }, 15000)
+      }, 10000)
     } catch (exeption) {
       setErrorMessage('Not correct values in input')
-      setTimeout(()=>{
+      setTimeout(() => {
         setErrorMessage(null)
-      }, 15000)
+      }, 10000)
       return console.log('exeption', exeption)
     }
   }
 
   return (
     <div className='blog-form'>
-    <h2>create new</h2>
-    <form onSubmit={addBlog}>
+      <h2>create new</h2>
+      <form onSubmit={addBlog}>
         <div>
           title:
           <input
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
+            value={title}
+            onChange={({ target }) => setTitle(target.value)}
           ></input>
         </div>
         <div>
           author:
           <input
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
+            value={author}
+            onChange={({ target }) => setAuthor(target.value)}
           ></input>
         </div>
         <div>
           url:
           <input
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
           ></input>
         </div>
         <button type='submit'>create</button>

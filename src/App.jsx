@@ -71,9 +71,29 @@ const App = () => {
       setErrorMessage={setErrorMessage}
       ></BlogForm>
       </Toggleble>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} blogs={blogs} setBlogs={setBlogs} />
-      )}
+      {blogs
+      .sort((cb, nb)=>{
+        if(cb.likes < nb.likes) {
+          return 1
+        }
+        if(cb.likes > nb.likes) {
+          return -1
+        }
+        if(cb.likes === nb.likes) {
+          return 0
+        }
+      })
+      .map(blog =>
+        <Blog 
+        key={blog.id} 
+        blog={blog} 
+        blogs={blogs}
+        setBlogs={setBlogs}
+        setSuccesMessage={setSuccesMessage}
+        setErrorMessage={setErrorMessage}
+         />
+      )
+      }
     </div>
   )
 }
