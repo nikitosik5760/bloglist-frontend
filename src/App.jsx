@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import './global.css'
+import { Notification } from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -11,6 +13,9 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [succesMessage, setSuccesMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
+
 
   useEffect(() => {
     const getBlogs = async() => {
@@ -44,6 +49,10 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exeption) {
+      setErrorMessage("Wrong password or username")
+      setTimeout(()=>{
+        setErrorMessage(null)
+      }, 3000)
       return console.log(exeption)
     }
   }
@@ -62,10 +71,17 @@ const App = () => {
       setAuthor('')
       setTitle('')
       setUrl('')
+      setSuccesMessage(`a new blog ${createdblog.title} added`)
+      setTimeout(() => {
+        setSuccesMessage(null)
+      }, 15000)
     } catch (exeption) {
+      setErrorMessage(exeption.toString())
+      setTimeout(()=>{
+        setErrorMessage(null)
+      }, 15000)
       return console.log('exeption', exeption)
     }
-
   }
 
   const login = () => (
@@ -92,6 +108,7 @@ const App = () => {
   if (!user) {
     return (
       <div>
+        <Notification message={errorMessage} type={"error-msg"}></Notification>
         <h1>log in to aplication</h1>
         {login()}
       </div>
@@ -100,6 +117,8 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={errorMessage} type={'error-msg'}></Notification>
+      <Notification message={succesMessage} type={'success-msg'}></Notification>
       <h2>blogs</h2>
       <p>{user.name} logged in</p>
       <button onClick={handleLogout}>logout</button>
