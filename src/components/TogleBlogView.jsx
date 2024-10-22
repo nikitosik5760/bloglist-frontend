@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 const TogleBlogView = (props) => {
   const [visible, setVisible] = useState(false)
-  
-  const hiddenWhenVisible = {display: visible ? 'none': ''}
-  const showWhenVisible = {display: visible ? '': 'none'}
+
+  const hiddenWhenVisible = { display: visible ? 'none': '' }
+  const showWhenVisible = { display: visible ? '': 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -12,15 +12,15 @@ const TogleBlogView = (props) => {
 
   return (
     <div>
-    <div style={showWhenVisible}>
-        <button onClick={toggleVisibility}>hide</button>
+      <div id={visible ? 'visible' : 'unvisible'} style={showWhenVisible}>
+        <button id='hide-btn' onClick={toggleVisibility}>hide</button>
         <br/>
         {props.children}
-    </div>
-    
-    <div style={hiddenWhenVisible}>
-        <button onClick={toggleVisibility}>view</button>
-    </div>
+      </div>
+
+      <div id={visible ? 'unvisible' : 'visible'} style={hiddenWhenVisible}>
+        <button id='view-btn' onClick={toggleVisibility}>view</button>
+      </div>
 
     </div>
   )

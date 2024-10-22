@@ -44,17 +44,29 @@ const Blog = ({ blog, blogs, setBlogs,setSuccesMessage,setErrorMessage }) => {
 
   return(
     <div className="blog">
-      {blog.title}
+      <span id='title'>
+        {blog.title}
+      </span>
+      author:
+      <span id='author'>
+        {blog.author}
+      </span>
       <TogleBlogView>
-        {blog.url}
+        <span id='url'>
+          {blog.url}
+        </span>
         <br/>
-        {blog.likes}
+        <span id='likes'>
+          {blog.likes}
+        </span>
         <button
           className="like-btn"
           onClick={handleLikeBlog}
         >like</button>
         <br/>
-        {blog.user.name}
+        <span id='username'>
+          {blog.user.name}
+        </span>
         <br/>
         <button
           className="remove-btn"
