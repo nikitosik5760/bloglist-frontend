@@ -23,10 +23,6 @@ const create = async newBlog => {
 }
 
 const likeBlog = async blogToLike => {
-  const config = {
-    headers : { Authorization: token },
-  }
-
   const response = await axios.put(
     `${baseUrl}/${blogToLike.id}`,
     {
@@ -35,8 +31,7 @@ const likeBlog = async blogToLike => {
       author:blogToLike.author,
       title:blogToLike.title,
       url:blogToLike.url
-    },
-    config
+    }
   )
 
   return response.data

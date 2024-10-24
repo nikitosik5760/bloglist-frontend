@@ -33,7 +33,7 @@ const Blog = ({ blog, blogs, setBlogs,setSuccesMessage,setErrorMessage }) => {
         }, 10000)
       }
     } catch (exeption) {
-      setErrorMessage('Cant remove blog')
+      setErrorMessage('Cant remove blog: not author')
       setTimeout(() => {
         setErrorMessage(null)
       }, 10000)
