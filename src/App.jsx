@@ -29,6 +29,11 @@ const App = () => {
     getBlogs();
   }, []);
 
+  const logout = () => {
+    setUser(null);
+    window.localStorage.clear();
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -144,6 +149,10 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <h3>{user.name} logged in</h3>{" "}
+      <button type="button" onClick={logout}>
+        logout
+      </button>
       {errorMessage ? <Message message={errorMessage} status={"error"} /> : ""}
       {successMessage ? (
         <Message message={successMessage} status={"success"} />
