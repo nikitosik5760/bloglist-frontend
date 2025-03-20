@@ -16,6 +16,12 @@ const App = () => {
   const [url, setUrl] = useState("");
 
   useEffect(() => {
+    const loggedBlogappUser = window.localStorage.getItem("loggedBlogappUser");
+    if (loggedBlogappUser) {
+      const user = JSON.parse(loggedBlogappUser);
+      setUser(user);
+      loginService.setToken(user.token);
+    }
     const getBlogs = async () => {
       const blogs = await blogService.getAll();
       setBlogs(blogs);
@@ -31,6 +37,7 @@ const App = () => {
       setUser(user);
       setUsername("");
       setPassword("");
+      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
     } catch (exception) {
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
@@ -61,6 +68,7 @@ const App = () => {
   const userForm = () => {
     return (
       <form className="user-form">
+        <label htmlFor="username">username</label>
         <input
           id="username"
           name="username"
@@ -68,6 +76,7 @@ const App = () => {
           value={username}
           onChange={({ target }) => setUsername(target.value)}
         />
+        <label htmlFor="password">password</label>
         <input
           id="password"
           name="password"
@@ -84,7 +93,7 @@ const App = () => {
   const blogForm = () => {
     return (
       <form className="blog-form">
-        <label for="title">Title</label>
+        <label htmlFor="title">Title</label>
         <input
           id="title"
           name="title"
@@ -93,7 +102,7 @@ const App = () => {
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
-        <label for="author">Author</label>
+        <label htmlFor="author">Author</label>
         <input
           id="author"
           name="author"
@@ -102,7 +111,7 @@ const App = () => {
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
         />
-        <label for="url">Url</label>
+        <label htmlFor="url">Url</label>
         <input
           id="url"
           name="url"
@@ -111,7 +120,6 @@ const App = () => {
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />
-
         <button type="submit" onClick={handlePostBlog}>
           Post Blog
         </button>
