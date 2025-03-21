@@ -4,7 +4,9 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
   };
 
   const handleDelete = () => {
-    deleteBlog(blog.id);
+    if (window.confirm(`Remove blog ${blog.title}?`)) {
+      deleteBlog(blog.id);
+    }
   };
 
   return (
