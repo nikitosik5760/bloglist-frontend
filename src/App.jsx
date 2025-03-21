@@ -3,17 +3,15 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Message from "./components/Message";
+import Togglable from "./components/Togglable";
+import UserForm from "./components/UserForm";
+import BlogForm from "./components/BlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
 
   useEffect(() => {
     const loggedBlogappUser = window.localStorage.getItem("loggedBlogappUser");
@@ -34,14 +32,11 @@ const App = () => {
     window.localStorage.clear();
   };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const loginUser = async (userObj) => {
     try {
-      const user = await loginService.loginUser({ username, password });
-      loginService.setToken(user.token);
+      const user = await loginService.loginUser(userObj);
       setUser(user);
-      setUsername("");
-      setPassword("");
+      loginService.setToken(user.token);
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
     } catch (exception) {
       setErrorMessage("Wrong credentials");
@@ -50,86 +45,22 @@ const App = () => {
       }, 5000);
     }
   };
-  const handlePostBlog = async (e) => {
-    e.preventDefault();
+
+  const addBlog = async (blogObj) => {
     try {
-      const newBlog = await blogService.postBlog({ title, author, url });
-      setTitle("");
-      setAuthor("");
-      setUrl("");
+      const newBlog = await blogService.postBlog(blogObj);
+      setBlogs((blogs) => blogs.concat(newBlog));
       setSuccessMessage("Blog created!");
       setTimeout(() => {
         setSuccessMessage("");
       }, 5000);
-      setBlogs((blogs) => blogs.concat(newBlog));
     } catch (exception) {
+      console.log(exception);
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
         setErrorMessage("");
       }, 5000);
     }
-  };
-
-  const userForm = () => {
-    return (
-      <form className="user-form">
-        <label htmlFor="username">username</label>
-        <input
-          id="username"
-          name="username"
-          type="text"
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-        <label htmlFor="password">password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-        <button type="submit" onClick={handleLogin}>
-          login
-        </button>
-      </form>
-    );
-  };
-  const blogForm = () => {
-    return (
-      <form className="blog-form">
-        <label htmlFor="title">Title</label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          placeholder="title"
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-        />
-        <label htmlFor="author">Author</label>
-        <input
-          id="author"
-          name="author"
-          type="author"
-          placeholder="author"
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-        <label htmlFor="url">Url</label>
-        <input
-          id="url"
-          name="url"
-          type="url"
-          placeholder="url"
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
-        />
-        <button type="submit" onClick={handlePostBlog}>
-          Post Blog
-        </button>
-      </form>
-    );
   };
 
   if (!user) {
@@ -141,7 +72,7 @@ const App = () => {
         ) : (
           ""
         )}
-        {userForm()}
+        <UserForm loginUser={loginUser} setErrorMessage={setErrorMessage} />
       </>
     );
   }
@@ -159,7 +90,9 @@ const App = () => {
       ) : (
         ""
       )}
-      {user ? blogForm() : userForm()}
+      <Togglable buttonLabel="new blog">
+        <BlogForm addBlog={addBlog} />
+      </Togglable>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
