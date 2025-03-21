@@ -28,6 +28,18 @@ const App = () => {
     getBlogs();
   }, []);
 
+  const deleteBlog = async (blogId) => {
+    try {
+      await blogService.deleteBlog(blogId);
+      setBlogs((blogs) => blogs.filter((blog) => blog.id !== blogId));
+    } catch (exception) {
+      setErrorMessage("You doesn`t own that blog!");
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+    }
+  };
+
   const likeBlog = async (blogObj) => {
     const likedBlog = await blogService.likeBlog(blogObj);
     setBlogs((blogs) =>
@@ -113,7 +125,7 @@ const App = () => {
           <div key={blog.id} className="container-blog">
             {blog.title}
             <Togglable buttonLabel={"view"}>
-              <Blog blog={blog} likeBlog={likeBlog} />
+              <Blog blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog} />
             </Togglable>
           </div>
         ))}
