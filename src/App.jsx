@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
@@ -13,6 +13,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const blogFormRef = useRef();
 
   useEffect(() => {
     const loggedBlogappUser = window.localStorage.getItem("loggedBlogappUser");
@@ -64,6 +65,12 @@ const App = () => {
       setUser(user);
       loginService.setToken(user.token);
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
+      setTimeout(
+        () => {
+          logout();
+        },
+        60 * 60 * 1000,
+      );
     } catch (exception) {
       setErrorMessage("Wrong credentials");
       setTimeout(() => {
@@ -75,6 +82,7 @@ const App = () => {
   const addBlog = async (blogObj) => {
     try {
       const newBlog = await blogService.postBlog(blogObj);
+      blogFormRef.current.toggleVisibility();
       setBlogs((blogs) => blogs.concat(newBlog));
       setSuccessMessage("Blog created!");
       setTimeout(() => {
@@ -116,7 +124,7 @@ const App = () => {
       ) : (
         ""
       )}
-      <Togglable buttonLabel="create new blog">
+      <Togglable buttonLabel="create new blog" ref={blogFormRef}>
         <BlogForm addBlog={addBlog} />
       </Togglable>
       {blogs
@@ -125,7 +133,12 @@ const App = () => {
           <div key={blog.id} className="container-blog">
             {blog.title}
             <Togglable buttonLabel={"view"}>
-              <Blog blog={blog} likeBlog={likeBlog} deleteBlog={deleteBlog} />
+              <Blog
+                blog={blog}
+                likeBlog={likeBlog}
+                deleteBlog={deleteBlog}
+                currentUser={user}
+              />
             </Togglable>
           </div>
         ))}

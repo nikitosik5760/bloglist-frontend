@@ -1,4 +1,4 @@
-const Blog = ({ blog, likeBlog, deleteBlog }) => {
+const Blog = ({ blog, likeBlog, deleteBlog, currentUser }) => {
   const handleLike = () => {
     likeBlog(blog);
   };
@@ -16,7 +16,15 @@ const Blog = ({ blog, likeBlog, deleteBlog }) => {
         {blog.likes} <button onClick={handleLike}>like</button>
       </span>
       <span id="username">{blog.user.username}</span>
-      <button className="remove-blog" onClick={handleDelete}>
+      <button
+        style={
+          currentUser.username === blog.user.username
+            ? { display: "block" }
+            : { display: "none" }
+        }
+        className="remove-blog"
+        onClick={handleDelete}
+      >
         remove
       </button>
     </div>
