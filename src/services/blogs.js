@@ -17,4 +17,12 @@ const postBlog = async (blogData) => {
   return request.data;
 };
 
-export default { getAll, postBlog };
+const likeBlog = async (blog) => {
+  const request = await axios.put(`${baseUrl}/${blog.id}`, {
+    ...blog,
+    likes: blog.likes + 1,
+  });
+  return request.data;
+};
+
+export default { getAll, postBlog, likeBlog };

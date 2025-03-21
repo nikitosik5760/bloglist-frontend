@@ -25,3 +25,14 @@ label {
   background: grey;
   color: red;
 }
+
+.container-blog {
+  border: 2px solid black;
+  padding: 2px;
+  margin: 2px;
+}
+
+.blog {
+  display: flex;
+  flex-direction: column;
+}

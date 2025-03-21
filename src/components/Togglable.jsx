@@ -8,8 +8,8 @@ export default function Togglable(props) {
   if (visible) {
     return (
       <>
-        {props.children}
         <button onClick={toggleVisibility}>cancel</button>
+        {props.children}
       </>
     );
   }

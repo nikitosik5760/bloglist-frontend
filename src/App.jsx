@@ -8,6 +8,7 @@ import UserForm from "./components/UserForm";
 import BlogForm from "./components/BlogForm";
 
 const App = () => {
+  // TODO make that logout is called when token expires
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -26,6 +27,19 @@ const App = () => {
     };
     getBlogs();
   }, []);
+
+  const likeBlog = async (blogObj) => {
+    const likedBlog = await blogService.likeBlog(blogObj);
+    setBlogs((blogs) =>
+      blogs.map((blog) => {
+        if (blog.id === likedBlog.id) {
+          return likedBlog;
+        } else {
+          return blog;
+        }
+      }),
+    );
+  };
 
   const logout = () => {
     setUser(null);
@@ -56,7 +70,7 @@ const App = () => {
       }, 5000);
     } catch (exception) {
       console.log(exception);
-      setErrorMessage("Wrong credentials");
+      setErrorMessage("Blog input is invalid");
       setTimeout(() => {
         setErrorMessage("");
       }, 5000);
@@ -90,12 +104,19 @@ const App = () => {
       ) : (
         ""
       )}
-      <Togglable buttonLabel="new blog">
+      <Togglable buttonLabel="create new blog">
         <BlogForm addBlog={addBlog} />
       </Togglable>
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
+      {blogs
+        .sort((a, b) => b.likes - a.likes)
+        .map((blog) => (
+          <div key={blog.id} className="container-blog">
+            {blog.title}
+            <Togglable buttonLabel={"view"}>
+              <Blog blog={blog} likeBlog={likeBlog} />
+            </Togglable>
+          </div>
+        ))}
     </div>
   );
 };
