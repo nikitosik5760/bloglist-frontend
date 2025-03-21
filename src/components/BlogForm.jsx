@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function BlogForm({ addBlog }) {
+const BlogForm = ({ addBlog }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -42,9 +42,10 @@ export default function BlogForm({ addBlog }) {
         value={url}
         onChange={({ target }) => setUrl(target.value)}
       />
-      <button type="submit" onClick={handlePostBlog}>
+      <button type="submit" id="submit" onClick={handlePostBlog}>
         Post Blog
       </button>
     </form>
   );
-}
+};
+export default BlogForm;

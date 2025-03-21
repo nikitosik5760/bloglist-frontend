@@ -131,15 +131,13 @@ const App = () => {
         .sort((a, b) => b.likes - a.likes)
         .map((blog) => (
           <div key={blog.id} className="container-blog">
-            {blog.title}
-            <Togglable buttonLabel={"view"}>
-              <Blog
-                blog={blog}
-                likeBlog={likeBlog}
-                deleteBlog={deleteBlog}
-                currentUser={user}
-              />
-            </Togglable>
+            <Blog
+              buttonLabel={"view"}
+              blog={blog}
+              likeBlog={likeBlog}
+              deleteBlog={deleteBlog}
+              currentUser={user}
+            />
           </div>
         ))}
     </div>
